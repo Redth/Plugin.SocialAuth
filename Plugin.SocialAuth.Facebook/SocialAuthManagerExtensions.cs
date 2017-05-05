@@ -8,5 +8,10 @@ namespace Plugin.SocialAuth.Facebook
 		{
 			return manager.AuthenticateAsync<IFacebookAccount, IFacebookAuthOptions> (ProviderType.Facebook, options);
 		}
+
+		public static Task FacebookLogoutAsync (this SocialAuthManager manager, IFacebookAccount account)
+		{
+			return manager.LogoutAsync<IFacebookAccount, IFacebookAuthOptions> (ProviderType.Facebook, account);
+		}
 	}
 }
