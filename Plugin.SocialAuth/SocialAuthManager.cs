@@ -39,32 +39,38 @@ namespace Plugin.SocialAuth
 			
 			var implType = Registrar.Find (providerType)?.FirstOrDefault ();
 
-			var impl = (IAuthProvider<TAccount, TOptions>)GetInstance (implType);
+			var impl = GetInstance<TAccount, TOptions> (implType);
 
 			return impl.AuthenticateAsync (options);
 		}
 
-		public Task LogoutAsync<TAccount> (ProviderType providerType, TAccount account)
+		public Task LogoutAsync<TAccount, TOptions> (ProviderType providerType, TAccount account)
+			where TOptions : IAuthOptions
 			where TAccount : IAccount
 		{
 			var implType = Registrar.Find(providerType)?.FirstOrDefault ();
 
-			var impl = GetInstance (implType);
+			var impl = GetInstance<TAccount, TOptions> (implType);
 
 			AccountStore.DeleteAccount (providerType, account.Id);
 
 			return impl.LogoutAsync ();
 		}
 
-		Dictionary<Type, IAuthProvider<IAccount, IAuthOptions>> instances { get; set; } 
-			= new Dictionary<Type, IAuthProvider<IAccount, IAuthOptions>> ();
+		// This is a weakly typed storage, probably not the best idea
+		Dictionary<Type, object> instances { get; set; } 
+			= new Dictionary<Type, object> ();
 
-		IAuthProvider<IAccount, IAuthOptions> GetInstance (Type type)
+		IAuthProvider<TAccount, TOptions> GetInstance<TAccount, TOptions> (Type type)
+			where TOptions : IAuthOptions
+			where TAccount : IAccount
 		{
 			if (instances.ContainsKey (type))
-				return instances[type];
+				return (IAuthProvider<TAccount, TOptions>)instances[type];
 
-			var impl = (IAuthProvider<IAccount, IAuthOptions>)Activator.CreateInstance(type);
+			var obj = Activator.CreateInstance(type);
+
+			var impl = (IAuthProvider<TAccount, TOptions>)obj;
 
 			instances.Add (type, impl);
 
