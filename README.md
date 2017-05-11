@@ -11,6 +11,12 @@ iOS and Android have both recently provided their own extensions of the operatin
 Plugin.SocialAuth aims to provide you with the latest and greatest options for adding social authentication to your Xamarin apps as easily as possible.
 
 
+### What's missing?
+
+ - NuGet packages
+ - Automatic handling of refreshing of access tokens in OAuth2
+ - More known provider support with specific authentication implementations (Fitbit, Meetup, etc).
+
 
 ## Supported Providers
 
