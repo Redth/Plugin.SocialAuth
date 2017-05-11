@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Plugin.SocialAuth.OAuth;
 
-namespace Plugin.SocialAuth.Twitter
+namespace Plugin.SocialAuth
 {
-	public static class SocialAuthManagerExtensions
+	public static class TwitterSocialAuthManagerExtensions
 	{
 		public static Task<IOAuth1Account> AuthenticateTwitterAsync(this SocialAuthManager authManager, IOAuth1Options options, string accountId = null)
 		{

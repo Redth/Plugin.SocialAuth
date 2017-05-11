@@ -8,6 +8,7 @@ using Plugin.SocialAuth.OAuth;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using Plugin.SocialAuth.Facebook;
+using Plugin.SocialAuth;
 
 namespace SocialAuthSample
 {
@@ -71,7 +72,7 @@ namespace SocialAuthSample
 			// previously used account ID somewhere
 			var existingAccount = SocialAuthManager.Current.AccountStore.FindAnyAccount("fitbit");
 
-			var account = await SocialAuthManager.Current.AuthenticateAsync<IOAuth2Account, IOAuth2Options>("fitbit", new OAuth2Options
+			var account = await SocialAuthManager.Current.AuthenticateOAuth2Async("fitbit", new OAuth2Options
 			{
 				ClientId = SocialKeys.FITBIT_CLIENT_ID,
 				ClientSecret = SocialKeys.FITBIT_CLIENT_SECRET,

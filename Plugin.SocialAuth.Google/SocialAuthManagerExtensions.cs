@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
+using Plugin.SocialAuth.Google;
 
-namespace Plugin.SocialAuth.Google
+namespace Plugin.SocialAuth
 {
-	public static class SocialAuthManagerExtensions
+	public static class GoogleSocialAuthManagerExtensions
 	{
 		public static Task<IGoogleAccount> AuthenticateGoogleAsync(this SocialAuthManager manager, IGoogleAuthOptions options, string accountId = null)
 		{

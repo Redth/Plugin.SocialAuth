@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
+using Plugin.SocialAuth.Facebook;
 
-namespace Plugin.SocialAuth.Facebook
+namespace Plugin.SocialAuth
 {
-	public static class SocialAuthManagerExtensions
+	public static class FacebookSocialAuthManagerExtensions
 	{
 		public static Task<IFacebookAccount> AuthenticateFacebookAsync(this SocialAuthManager manager, IFacebookAuthOptions options, string accountId = null)
 		{
