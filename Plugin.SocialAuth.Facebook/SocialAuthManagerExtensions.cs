@@ -4,14 +4,14 @@ namespace Plugin.SocialAuth.Facebook
 {
 	public static class SocialAuthManagerExtensions
 	{
-		public static Task<IFacebookAccount> FacebookAuthenticateAsync (this SocialAuthManager manager, IFacebookAuthOptions options)
+		public static Task<IFacebookAccount> AuthenticateFacebookAsync(this SocialAuthManager manager, IFacebookAuthOptions options, string accountId = null)
 		{
-			return manager.AuthenticateAsync<IFacebookAccount, IFacebookAuthOptions> (ProviderType.Facebook, options);
+			return manager.AuthenticateAsync<IFacebookAccount, IFacebookAuthOptions>(ProviderType.Facebook, options, accountId);
 		}
 
-		public static Task FacebookLogoutAsync (this SocialAuthManager manager, IFacebookAccount account)
+		public static Task LogoutFacebookAsync(this SocialAuthManager manager, IFacebookAccount account)
 		{
-			return manager.LogoutAsync<IFacebookAccount, IFacebookAuthOptions> (ProviderType.Facebook, account);
+			return manager.LogoutAsync<IFacebookAccount, IFacebookAuthOptions>(ProviderType.Facebook, account);
 		}
 	}
 }

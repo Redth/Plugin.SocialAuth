@@ -2,111 +2,110 @@ using System;
 using System.Threading.Tasks;
 using Android.App;
 using Java.Interop;
+using Plugin.SocialAuth.Droid;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
 
 namespace Plugin.SocialAuth.Facebook.Droid
 {
-	public class FacebookAuthProvider : IAuthProvider<IFacebookAccount, IFacebookAuthOptions>
+	public class FacebookAuthProvider : IAuthProviderDroidWithOnActivityResult<IFacebookAccount, IFacebookAuthOptions>
 	{
-		public static void Init ()
+		public static void Init (string facebookAppId)
 		{
-			Registrar.Register (ProviderType.Facebook, typeof (FacebookAuthProvider));
+			FacebookSdk.ApplicationId = facebookAppId;
 		}
 
-		public static void Uninit ()
+		public void OnActivityResult(int requestCode, Result resultCode, global::Android.Content.Intent data)
 		{
-			Registrar.Unregister (ProviderType.Facebook, typeof (FacebookAuthProvider));
-		}
-
-		public IAccountStore AccountStore { get;set; }
-
-		public static void OnActivityResult (int requestCode, Result resultCode, global::Android.Content.Intent data)
-		{
-			callbackManager?.OnActivityResult (requestCode, (int)resultCode, data);
+			callbackManager?.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
 		static ICallbackManager callbackManager = null;
 
-		public async Task<IFacebookAccount> AuthenticateAsync (IFacebookAuthOptions options)
+		public async Task<IFacebookAccount> AuthenticateAsync(IFacebookAuthOptions options)
 		{
 			// Check if we have a cached login already that's still good
 			var currentAccessToken = AccessToken.CurrentAccessToken;
-			if (currentAccessToken != null && (currentAccessToken.Expires == null || ToManagedDateTime (currentAccessToken.Expires) > DateTime.UtcNow))
+			if (currentAccessToken != null && (currentAccessToken.Expires == null || ToManagedDateTime(currentAccessToken.Expires) > DateTime.UtcNow))
 			{
 				// If we also have a profile, we have enough information to return a good account
 				// without actuall doing the sign in flow
 				var currentProfile = Profile.CurrentProfile;
 				if (currentProfile != null)
-					return populateAccount (currentAccessToken, currentProfile, options.RequestedPhotoSize);
+					return populateAccount(currentAccessToken, currentProfile, options.RequestedPhotoSize);
 			}
 
 			var activity = Plugin.SocialAuth.Droid.SocialAuth.CurrentActivity;
 
-			callbackManager = CallbackManagerFactory.Create ();
+			callbackManager = CallbackManagerFactory.Create();
 			var loginManager = LoginManager.Instance;
-			var fbHandler = new FbCallbackHandler ();
+			var fbHandler = new FbCallbackHandler();
 
-			loginManager.RegisterCallback (callbackManager, fbHandler);
+			loginManager.RegisterCallback(callbackManager, fbHandler);
 
 
-			fbHandler.Reset ();
+			fbHandler.Reset();
 
 			if (options?.WritePermissions ?? false)
-				loginManager.LogInWithPublishPermissions (activity, options?.Scopes);
+				loginManager.LogInWithPublishPermissions(activity, options?.Scopes);
 			else
-				loginManager.LogInWithReadPermissions (activity, options?.Scopes);
-			
+				loginManager.LogInWithReadPermissions(activity, options?.Scopes);
+
 			LoginResult result = null;
 
-			try {
+			try
+			{
 				result = await fbHandler.Task;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				throw ex;
 			}
 
 			if (result == null || result.AccessToken == null)
 				return null;
 
-			return populateAccount (result.AccessToken, Profile.CurrentProfile, options.RequestedPhotoSize);
+			return populateAccount(result.AccessToken, Profile.CurrentProfile, options.RequestedPhotoSize);
 		}
 
-		public Task LogoutAsync ()
+		public Task LogoutAsync()
 		{
-			LoginManager.Instance.LogOut ();
+			LoginManager.Instance.LogOut();
 
 			return Task.CompletedTask;
 		}
-		
-		DateTime ToManagedDateTime (Java.Util.Date date)
+
+		DateTime ToManagedDateTime(Java.Util.Date date)
 		{
-			return new DateTime (1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds (date.Time);
+			return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddMilliseconds(date.Time);
 		}
 
 
-		IFacebookAccount populateAccount (AccessToken accessToken, Profile profile, ImageSize photoSize = null)
+		IFacebookAccount populateAccount(AccessToken accessToken, Profile profile, ImageSize photoSize = null)
 		{
 			DateTime? expires = null;
 			if (accessToken.Expires != null)
-				expires = ToManagedDateTime (accessToken.Expires);
+				expires = ToManagedDateTime(accessToken.Expires);
 			//DateTime? lastRefresh = null;
 			//if (accessToken.LastRefresh != null)
 			//	lastRefresh = ToManagedDateTime (accessToken.LastRefresh);
 
 			Uri linkUri = null;
 			if (profile?.LinkUri != null)
-				linkUri = new Uri (profile.LinkUri.ToString (), UriKind.Absolute);
+				linkUri = new Uri(profile.LinkUri.ToString(), UriKind.Absolute);
 
 			Uri photoUri = null;
-			if (profile != null) {
+			if (profile != null)
+			{
 				if (photoSize == null)
-					photoSize = new ImageSize ();
-				var u = profile.GetProfilePictureUri (photoSize.Width, photoSize.Height);
+					photoSize = new ImageSize();
+				var u = profile.GetProfilePictureUri(photoSize.Width, photoSize.Height);
 				if (u != null)
-					photoUri = new Uri (u.ToString (), UriKind.Absolute);
+					photoUri = new Uri(u.ToString(), UriKind.Absolute);
 			}
 
-			return new FacebookAccount {
+			return new FacebookAccount
+			{
 				Id = profile?.Id ?? accessToken.UserId,
 				ApplicationId = accessToken.ApplicationId,
 				UserId = accessToken.UserId,
@@ -125,35 +124,38 @@ namespace Plugin.SocialAuth.Facebook.Droid
 
 		class FbCallbackHandler : Java.Lang.Object, IFacebookCallback
 		{
-			TaskCompletionSource<LoginResult> tcs = new TaskCompletionSource<LoginResult> ();
+			TaskCompletionSource<LoginResult> tcs = new TaskCompletionSource<LoginResult>();
 
-			public void Reset ()
+			public void Reset()
 			{
-				if (tcs != null && !tcs.Task.IsCompleted) {
-					tcs.TrySetResult (null);
+				if (tcs != null && !tcs.Task.IsCompleted)
+				{
+					tcs.TrySetResult(null);
 				}
 
-				tcs = new TaskCompletionSource<LoginResult> ();
+				tcs = new TaskCompletionSource<LoginResult>();
 			}
 
-			public Task<LoginResult> Task {
-				get {
+			public Task<LoginResult> Task
+			{
+				get
+				{
 					return tcs.Task;
 				}
 			}
-			public void OnCancel ()
+			public void OnCancel()
 			{
-				tcs.TrySetResult (null);
+				tcs.TrySetResult(null);
 			}
 
-			public void OnError (FacebookException ex)
+			public void OnError(FacebookException ex)
 			{
-				tcs.TrySetException (new System.Exception (ex.Message));
+				tcs.TrySetException(new System.Exception(ex.Message));
 			}
 
-			public void OnSuccess (Java.Lang.Object data)
+			public void OnSuccess(Java.Lang.Object data)
 			{
-				tcs.TrySetResult (data.JavaCast<LoginResult> ());
+				tcs.TrySetResult(data.JavaCast<LoginResult>());
 			}
 		}
 	}

@@ -10,75 +10,83 @@ using Android.Gms.Common;
 using Android.Gms.Common.Apis;
 using Android.Gms.Extensions;
 using Android.OS;
+using Plugin.SocialAuth.Droid;
 
 namespace Plugin.SocialAuth.Google.Droid
 {
-	public class GoogleAuthProvider : IAuthProvider<IAccount, IGoogleAuthOptions>
+	public class GoogleAuthProvider : IAuthProviderDroidWithOnActivityResult<IAccount, IGoogleAuthOptions>
 	{
-		public static void Init ()
+		public void OnActivityResult(int requestCode, Result result, Intent data)
 		{
-			Registrar.Register (ProviderType.Google, typeof (GoogleAuthProvider));
-		}
+			// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+			if (requestCode == GoogleSignInProvider.SIGN_IN_REQUEST_CODE)
+			{
+				var googleSignInResult = Auth.GoogleSignInApi.GetSignInResultFromIntent(data);
 
-		public static void Uninit ()
-		{
-			Registrar.Unregister (ProviderType.Google, typeof (GoogleAuthProvider));
+				googleSignInProvider?.FoundResult(googleSignInResult);
+			}
 		}
 
 		static GoogleSignInProvider googleSignInProvider;
 
-		public async Task<IAccount> AuthenticateAsync (IGoogleAuthOptions options)
+		public async Task<IAccount> AuthenticateAsync(IGoogleAuthOptions options)
 		{
-			googleSignInProvider = new GoogleSignInProvider ();
+			googleSignInProvider = new GoogleSignInProvider();
 
 			GoogleSignInResult result = null;
 
-			result = await googleSignInProvider.Authenticate (options);
+			result = await googleSignInProvider.Authenticate(options);
 
 			if (result == null || result.Status.IsCanceled || result.Status.IsInterrupted)
 				return null;
 
-			if (!result.IsSuccess || result.SignInAccount == null) {
+			if (!result.IsSuccess || result.SignInAccount == null)
+			{
 				// TODO: Report error
 				return null;
 			}
 
 			var acct = result.SignInAccount;
 
-			var grantedScopes = new List<string> ();
-			if (acct.GrantedScopes != null && acct.GrantedScopes.Any ())
-				grantedScopes.AddRange (acct.GrantedScopes.Select (s => s.ToString ()));
+			var grantedScopes = new List<string>();
+			if (acct.GrantedScopes != null && acct.GrantedScopes.Any())
+				grantedScopes.AddRange(acct.GrantedScopes.Select(s => s.ToString()));
 
 			Uri photoUrl = null;
 			if (acct.PhotoUrl != null)
-				Uri.TryCreate (acct.PhotoUrl.ToString (), UriKind.Absolute, out photoUrl);
+				Uri.TryCreate(acct.PhotoUrl.ToString(), UriKind.Absolute, out photoUrl);
 
 
 			// Try and obtain an access token
 			var activity = Plugin.SocialAuth.Droid.SocialAuth.CurrentActivity;
-			var androidAccount = Android.Accounts.AccountManager.FromContext (activity)
-			                            ?.GetAccounts ()
-			                            ?.FirstOrDefault (a => a.Name?.Equals (result?.SignInAccount?.Email, StringComparison.InvariantCultureIgnoreCase) ?? false);
-			
-			var tokenScopes = options.Scopes.Select (s => "oauth2:" + s);
+			var androidAccount = Android.Accounts.AccountManager.FromContext(activity)
+										?.GetAccounts()
+										?.FirstOrDefault(a => a.Name?.Equals(result?.SignInAccount?.Email, StringComparison.InvariantCultureIgnoreCase) ?? false);
+
+			var tokenScopes = options.Scopes.Select(s => "oauth2:" + s);
 
 			string accessToken = null;
 			DateTime? accessTokenExpires = null;
-			if (androidAccount != null) {
+			if (androidAccount != null)
+			{
 				// We must run this on a non-ui thread or google will throw an error
-				accessToken = await Task.Run (() => {
-					try {
-						return Android.Gms.Auth.GoogleAuthUtil.GetToken (activity, androidAccount, string.Join (" ", tokenScopes));
-					} catch { }
+				accessToken = await Task.Run(() =>
+				{
+					try
+					{
+						return global::Android.Gms.Auth.GoogleAuthUtil.GetToken(activity, androidAccount, string.Join(" ", tokenScopes));
+					}
+					catch { }
 					return null;
 				});
 
 				// This token will be an offline token 
-				if (!string.IsNullOrEmpty (accessToken))
+				if (!string.IsNullOrEmpty(accessToken))
 					accessTokenExpires = DateTime.MaxValue;
 			}
 
-			return new GoogleAccount {
+			return new GoogleAccount
+			{
 				Id = acct.Id,
 				IdToken = acct.IdToken,
 				ServerAuthCode = acct.ServerAuthCode,
@@ -93,23 +101,12 @@ namespace Plugin.SocialAuth.Google.Droid
 			};
 		}
 
-		public async Task LogoutAsync ()
+		public async Task LogoutAsync()
 		{
-			var googleSignOutProvider = new GoogleSignOutProvider ();
+			var googleSignOutProvider = new GoogleSignOutProvider();
 
-			await googleSignOutProvider.SignOut ();
+			await googleSignOutProvider.SignOut();
 		}
-
-		public static void OnActivityResult (int requestCode, Result result, Intent data)
-		{
-			// Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-			if (requestCode == GoogleSignInProvider.SIGN_IN_REQUEST_CODE) {
-				var googleSignInResult = Auth.GoogleSignInApi.GetSignInResultFromIntent (data);
-
-				googleSignInProvider?.FoundResult (googleSignInResult);
-			}
-		}
-
 
 		internal class GoogleSignInProvider : Java.Lang.Object, GoogleApiClient.IOnConnectionFailedListener, GoogleApiClient.IConnectionCallbacks
 		{
@@ -119,79 +116,80 @@ namespace Plugin.SocialAuth.Google.Droid
 
 			TaskCompletionSource<GoogleSignInResult> tcsSignIn;
 
-			public void FoundResult (GoogleSignInResult result)
+			public void FoundResult(GoogleSignInResult result)
 			{
 				if (tcsSignIn != null && !tcsSignIn.Task.IsCompleted)
-					tcsSignIn.TrySetResult (result);
+					tcsSignIn.TrySetResult(result);
 			}
 
-			public async Task<GoogleSignInResult> Authenticate (IGoogleAuthOptions options)
+			public async Task<GoogleSignInResult> Authenticate(IGoogleAuthOptions options)
 			{
-				var googleScopes = options?.Scopes?.Select (s => new Scope (s))?.ToArray ();
+				var googleScopes = options?.Scopes?.Select(s => new Scope(s))?.ToArray();
 
-				var gsoBuilder = new Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.Builder (Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.DefaultSignIn);
-				                                        //.RequestServerAuthCode (LoginService.GOOGLE_SERVER_CLIENT_ID_ANDROID)
+				var gsoBuilder = new GoogleSignInOptions.Builder(GoogleSignInOptions.DefaultSignIn);
 
-				if (!string.IsNullOrEmpty (options.ServerClientId))
-					gsoBuilder = gsoBuilder.RequestIdToken (options.ServerClientId);
-				
-				if (googleScopes != null && googleScopes.Any ())
-					gsoBuilder = gsoBuilder.RequestScopes (googleScopes.First (), googleScopes.Skip (1).ToArray ());
+				if (!string.IsNullOrEmpty(options.ServerClientId))
+					gsoBuilder = gsoBuilder.RequestIdToken(options.ServerClientId);
+
+				if (googleScopes != null && googleScopes.Any())
+					gsoBuilder = gsoBuilder.RequestScopes(googleScopes.First(), googleScopes.Skip(1).ToArray());
 
 				if (options.FetchProfile)
-					gsoBuilder = gsoBuilder.RequestProfile ().RequestEmail ();
+					gsoBuilder = gsoBuilder.RequestProfile().RequestEmail();
 
-				var gso = gsoBuilder.Build ();
+				var gso = gsoBuilder.Build();
 
 				var activity = Plugin.SocialAuth.Droid.SocialAuth.CurrentActivity;
 
-				googleApiClient = new GoogleApiClient.Builder (activity)
-				                                     .EnableAutoManage (activity, 789, this)
-				                                     .AddConnectionCallbacks(this)
-				                                     .AddApi (Auth.GOOGLE_SIGN_IN_API, gso)
-				                                     .Build ();
+				googleApiClient = new GoogleApiClient.Builder(activity)
+													 .EnableAutoManage(activity, 789, this)
+													 .AddConnectionCallbacks(this)
+													 .AddApi(Auth.GOOGLE_SIGN_IN_API, gso)
+													 .Build();
 
-				googleApiClient.Connect ();
+				googleApiClient.Connect();
 
-				tcsSignIn = new TaskCompletionSource<GoogleSignInResult> ();
+				tcsSignIn = new TaskCompletionSource<GoogleSignInResult>();
 
 				var result = await tcsSignIn.Task;
 
-				googleApiClient.StopAutoManage (activity);
+				googleApiClient.StopAutoManage(activity);
 
 				return result;
 			}
 
-			public void OnConnectionFailed (ConnectionResult result)
+			public void OnConnectionFailed(ConnectionResult result)
 			{
-				tcsSignIn.TrySetException (new Exception ("Google Services Connection Failed: " + result.ErrorMessage));
+				tcsSignIn.TrySetException(new Exception("Google Services Connection Failed: " + result.ErrorMessage));
 			}
 
-			public async void OnConnected (Bundle connectionHint)
+			public async void OnConnected(Bundle connectionHint)
 			{
 				// First try a silent login
 				try
 				{
-					var silentResult = await Auth.GoogleSignInApi.SilentSignIn (googleApiClient).AsAsync<GoogleSignInResult>();
+					var silentResult = await Auth.GoogleSignInApi.SilentSignIn(googleApiClient).AsAsync<GoogleSignInResult>();
 
-					if (silentResult != null && silentResult.IsSuccess) {
-						FoundResult (silentResult);
+					if (silentResult != null && silentResult.IsSuccess)
+					{
+						FoundResult(silentResult);
 						return;
 					}
-						
-				} catch { }
+
+				}
+				catch { }
 
 				// If silent failed, go to the normal sign in flow
-				var signInIntent = Auth.GoogleSignInApi.GetSignInIntent (googleApiClient);
+				var signInIntent = Auth.GoogleSignInApi.GetSignInIntent(googleApiClient);
 
 				var activity = Plugin.SocialAuth.Droid.SocialAuth.CurrentActivity;
 
-				activity.StartActivityForResult (signInIntent, SIGN_IN_REQUEST_CODE);
+				activity.StartActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
 			}
 
-			public void OnConnectionSuspended (int cause)
+			public void OnConnectionSuspended(int cause)
 			{
-				tcsSignIn.TrySetException (new Exception ("Connection Suspended: " + cause));
+				tcsSignIn.TrySetException(new Exception("Connection Suspended: " + cause));
 			}
 		}
 
@@ -203,44 +201,44 @@ namespace Plugin.SocialAuth.Google.Droid
 
 			TaskCompletionSource<Statuses> tcsSignOut;
 
-			public async Task<Statuses> SignOut ()
+			public async Task<Statuses> SignOut()
 			{
-				var gsoBuilder = new Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.Builder (Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.DefaultSignIn);
-				var gso = gsoBuilder.Build ();
+				var gsoBuilder = new Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.Builder(Android.Gms.Auth.Api.SignIn.GoogleSignInOptions.DefaultSignIn);
+				var gso = gsoBuilder.Build();
 
 				var activity = Plugin.SocialAuth.Droid.SocialAuth.CurrentActivity;
 
-				googleApiClient = new GoogleApiClient.Builder (activity)
-				                                     .EnableAutoManage (activity, 987, this)
-				                                     .AddConnectionCallbacks (this)
-				                                     .AddApi (Auth.GOOGLE_SIGN_IN_API, gso)
-				                                     .Build ();
+				googleApiClient = new GoogleApiClient.Builder(activity)
+													 .EnableAutoManage(activity, 987, this)
+													 .AddConnectionCallbacks(this)
+													 .AddApi(Auth.GOOGLE_SIGN_IN_API, gso)
+													 .Build();
 
-				googleApiClient.Connect ();
+				googleApiClient.Connect();
 
-				tcsSignOut = new TaskCompletionSource<Statuses> ();
+				tcsSignOut = new TaskCompletionSource<Statuses>();
 
 				var result = await tcsSignOut.Task;
 
-				googleApiClient.StopAutoManage (activity);
+				googleApiClient.StopAutoManage(activity);
 
 				return result;
 			}
 
-			public void OnConnectionFailed (ConnectionResult result)
+			public void OnConnectionFailed(ConnectionResult result)
 			{
-				tcsSignOut.TrySetException (new Exception ("Google Services Connection Failed: " + result.ErrorMessage));
+				tcsSignOut.TrySetException(new Exception("Google Services Connection Failed: " + result.ErrorMessage));
 			}
 
-			public async void OnConnected (Bundle connectionHint)
+			public async void OnConnected(Bundle connectionHint)
 			{
-				var r = await Auth.GoogleSignInApi.SignOut (googleApiClient).AsAsync<Statuses> ();
-				tcsSignOut.TrySetResult (r);
+				var r = await Auth.GoogleSignInApi.SignOut(googleApiClient).AsAsync<Statuses>();
+				tcsSignOut.TrySetResult(r);
 			}
 
-			public void OnConnectionSuspended (int cause)
+			public void OnConnectionSuspended(int cause)
 			{
-				tcsSignOut.TrySetException (new Exception ("Connection Suspended: " + cause));
+				tcsSignOut.TrySetException(new Exception("Connection Suspended: " + cause));
 			}
 		}
 	}

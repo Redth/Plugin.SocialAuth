@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Plugin.SocialAuth.OAuth;
 
 namespace Plugin.SocialAuth.Google
 {
-	public interface IGoogleAccount : IAccount
+	public interface IGoogleAccount : IOAuth2Account
 	{
 		string DisplayName { get; }
 		string Email { get; }
@@ -13,5 +14,8 @@ namespace Plugin.SocialAuth.Google
 		Uri PhotoUri { get; }
 
 		IEnumerable<string> GrantedScopes { get; }
+
+		string IdToken { get; set; }
+		DateTime? IdTokenExpires { get; set; }
 	}
 }

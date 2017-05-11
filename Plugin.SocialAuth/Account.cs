@@ -3,30 +3,113 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Threading.Tasks;
 
 namespace Plugin.SocialAuth
 {
-
-	[DataContract (Name="account")]
-	public class Account : IAccount
+	public abstract class Account : Dictionary<string, string>, IAccount
 	{
-		[DataMember(Name="id")]
-		public string Id { get; set; }
-		[DataMember (Name="name")]
-		public string Name { get;set; }
+		public string Id
+		{
+			get { return GetStringValue("id"); }
+			set { SetStringValue("id", value); }
+		}
 
-		[DataMember (Name="accessToken")]
-		public string AccessToken { get; set; }
-		[DataMember (Name="refreshToken")]
-		public string RefreshToken { get;set; }
-		[DataMember (Name="idToken")]
-		public string IdToken { get; set; }
+		public string Name
+		{
+			get { return GetStringValue("name"); }
+			set { SetStringValue("name", value); }
+		}
 
-		[DataMember (Name="accessTokenExpires")]
-		public DateTime? AccessTokenExpires { get; set; }
-		[DataMember (Name="refreshTokenExpires")]
-		public DateTime? RefreshTokenExpires { get; set; }
-		[DataMember (Name="idTokenExpires")]
-		public DateTime? IdTokenExpires { get; set; }
+		public abstract Task<bool> CheckValidity();
+
+		protected string GetStringValue(string key, string defaultValue = null)
+		{
+			string r;
+			if (!TryGetValue(key, out r))
+				r = defaultValue;
+			return r;
+		}
+
+		protected void SetStringValue(string key, string value = null)
+		{
+			if (ContainsKey(key))
+				this[key] = value;
+			else
+				Add(key, value);
+		}
+
+		protected DateTime? GetDateTimeValue(string key, DateTime? defaultValue = null)
+		{
+			DateTime r;
+
+			var str = GetStringValue(key);
+
+			if (string.IsNullOrEmpty(str))
+				return defaultValue;
+
+			if (DateTime.TryParse(str, out r))
+				return r;
+
+			return defaultValue;
+		}
+
+		protected void SetDateTimeValue(string key, DateTime? value = null)
+		{
+			if (!value.HasValue)
+				SetStringValue(key);
+			else
+			{
+				var t = value.Value.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+				var s = (int)t.TotalSeconds;
+				SetStringValue(key, s.ToString());
+			}
+		}
+
+		protected long? GetLongValue(string key, long? defaultValue = null)
+		{
+			long r;
+
+			var str = GetStringValue(key);
+
+			if (string.IsNullOrEmpty(str))
+				return defaultValue;
+
+			if (long.TryParse(str, out r))
+				return r;
+
+			return defaultValue;
+		}
+
+		protected void SetLongValue(string key, long? value = null)
+		{
+			if (!value.HasValue)
+				SetStringValue(key);
+			else
+				SetStringValue(key, value.Value.ToString());
+		}
+
+		protected bool? GetBoolValue(string key, bool? defaultValue = null)
+		{
+			bool r;
+
+			var str = GetStringValue(key);
+
+			if (string.IsNullOrEmpty(str))
+				return defaultValue;
+
+			if (bool.TryParse(str, out r))
+				return r;
+
+			return defaultValue;
+		}
+
+		protected void SetBoolValue(string key, bool? value = null)
+		{
+			if (!value.HasValue)
+				SetStringValue(key);
+			else
+				SetStringValue(key, value.Value.ToString());
+		}
 	}
 }

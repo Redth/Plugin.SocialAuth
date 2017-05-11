@@ -7,6 +7,8 @@ namespace Plugin.SocialAuth.Google
 		string ClientId { get; }
 		string ServerClientId { get; }
 
+		string[] Scopes { get; }
+
 		uint RequestedPhotoDimension { get; }
 	}
 }

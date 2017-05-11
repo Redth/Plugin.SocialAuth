@@ -5,6 +5,8 @@ namespace Plugin.SocialAuth.Facebook
 	{
 		bool WritePermissions { get; set; }
 
-		ImageSize RequestedPhotoSize { get;set; }
+		string[] Scopes { get; set; }
+
+		ImageSize RequestedPhotoSize { get; set; }
 	}
 }

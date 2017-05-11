@@ -3,6 +3,6 @@ namespace Plugin.SocialAuth
 {
 	public interface IAuthOptions
 	{
-		string[] Scopes { get; }
+		//string[] Scopes { get; }
 	}
 }

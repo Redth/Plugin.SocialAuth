@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
@@ -8,68 +9,76 @@ namespace Plugin.SocialAuth
 {
 	public class AccountStore : IAccountStore
 	{
-		public IAccount FindAccount (ProviderType provider, string id)
+		public AccountStore(ISecureStore secureStore = null)
 		{
-			if (string.IsNullOrEmpty (id))
+			SecureStore = secureStore;
+		}
+
+		public ISecureStore SecureStore { get; set; }
+
+		public IAccount FindAccount(string providerTypeId, string id)
+		{
+			if (string.IsNullOrEmpty(id))
 				return null;
-			
-			var providerId = GetProviderId (provider);
 
-			var accounts = JsonSerializer.Deserialize<Dictionary<string, IAccount>> (Registrar.SecureStore?[providerId]);
+			var accounts = FindAccounts(providerTypeId);
 
-			if (accounts?.ContainsKey(id) ?? false)
-				return accounts[id];
-
-			return null;
+			return accounts.FirstOrDefault(a => a.Id == id);
 		}
 
-		public IDictionary<string, IAccount> FindAccounts (ProviderType provider)
+		public IAccount FindAnyAccount(ProviderType providerType)
 		{
-			var providerId = GetProviderId (provider);
-
-			return JsonSerializer.Deserialize<Dictionary<string, IAccount>> (Registrar.SecureStore?[providerId])
-				?? new Dictionary<string, IAccount> ();
+			return FindAnyAccount(SocialAuthManager.GetProviderTypeId(providerType));
 		}
 
-		public void SaveAccount (ProviderType provider, string id, IAccount account)
+		public IAccount FindAnyAccount(string providerTypeId)
 		{
-			var providerId = GetProviderId (provider);
+			var accounts = FindAccounts(providerTypeId);
 
-			var accounts = JsonSerializer.Deserialize<Dictionary<string, IAccount>> (Registrar.SecureStore?[providerId]);
-
-			if (accounts.ContainsKey(id))
-				accounts[id] = account;
-			else
-				accounts.Add (id, account);
-
-			Registrar.SecureStore[providerId] = JsonSerializer.Serialize (accounts, true);
+			return accounts?.FirstOrDefault();
 		}
 
-		public void DeleteAccount (ProviderType provider, string id)
+		public IEnumerable<IAccount> FindAccounts(ProviderType providerType)
 		{
-			var providerId = GetProviderId (provider);
-
-			var accounts = JsonSerializer.Deserialize<Dictionary<string, IAccount>> (Registrar.SecureStore?[providerId]);
-
-			if (accounts.ContainsKey(id))
-				accounts.Remove (id);
-			
-			Registrar.SecureStore[providerId] = JsonSerializer.Serialize (accounts, true);
+			return FindAccounts(SocialAuthManager.GetProviderTypeId(providerType));
 		}
 
-		string GetProviderId (ProviderType provider)
+		public IEnumerable<IAccount> FindAccounts(string providerTypeId)
 		{
-			switch (provider)
-			{
-				case ProviderType.Facebook:
-					return "facebook";
-				case ProviderType.Google:
-					return "google";
-				default:
-					return provider.ToString().ToLowerInvariant ();
-			}
+			var serialized = SecureStore?[providerTypeId];
+
+			var items = JsonSerializer.Deserialize<List<IAccount>>(serialized, false, true);
+
+			return items;
+		}
+
+		public void SaveAccount(string providerTypeId, IAccount account)
+		{
+			var accounts = new List<IAccount>();
+
+			var serialized = SecureStore?[providerTypeId];
+			if (!string.IsNullOrEmpty(serialized))
+				accounts = JsonSerializer.Deserialize<List<IAccount>>(serialized);
+
+			if (account != null && !string.IsNullOrEmpty(account.Id))
+				accounts.RemoveAll(a => a.Any(kvp => kvp.Key == "id" && kvp.Value == account.Id));
+
+			accounts.Add(account);
+
+			serialized = JsonSerializer.Serialize(accounts, true, true);
+
+			SecureStore[providerTypeId] = serialized;
+		}
+
+		public void DeleteAccount(string providerTypeId, string id)
+		{
+			var accounts = JsonSerializer.Deserialize<List<IAccount>>(SecureStore?[providerTypeId]);
+
+			accounts.RemoveAll(a => a.Id == id);
+
+			var serialized = JsonSerializer.Serialize(accounts, true, true);
+
+			SecureStore[providerTypeId] = serialized;
 		}
 	}
-
-	
 }

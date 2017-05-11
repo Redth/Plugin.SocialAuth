@@ -10,7 +10,7 @@ namespace Plugin.SocialAuth
 		where TAccount : IAccount
 		where TOptions : IAuthOptions
 	{
-		Task<TAccount> AuthenticateAsync (TOptions options);
-		Task LogoutAsync ();
+		Task<TAccount> AuthenticateAsync(TOptions options);
+		Task LogoutAsync();
 	}
 }

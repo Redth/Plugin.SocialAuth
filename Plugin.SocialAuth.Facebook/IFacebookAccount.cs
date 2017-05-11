@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Plugin.SocialAuth.OAuth;
 
 namespace Plugin.SocialAuth.Facebook
 {
-	public interface IFacebookAccount : IAccount
+	public interface IFacebookAccount : IOAuth2Account
 	{
 		string ApplicationId { get; set; }
 		string UserId { get; set; }

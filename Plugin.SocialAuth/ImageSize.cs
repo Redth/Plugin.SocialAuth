@@ -3,7 +3,7 @@ namespace Plugin.SocialAuth
 {
 	public class ImageSize
 	{
-		public ImageSize ()
+		public ImageSize()
 		{
 			Width = 256;
 			Height = 256;
@@ -15,11 +15,13 @@ namespace Plugin.SocialAuth
 			Height = height;
 		}
 
-		public int Width { get;set; } = 256;
-		public int Height { get;set; } = 256;
+		public int Width { get; set; } = 256;
+		public int Height { get; set; } = 256;
 
-		public bool IsSquare {
-			get {
+		public bool IsSquare
+		{
+			get
+			{
 				return Width == Height;
 			}
 		}

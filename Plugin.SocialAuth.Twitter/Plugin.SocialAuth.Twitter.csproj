@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Plugin.SocialAuth.Twitter.Droid\TwitterCustomTabsAuthProvider.cs" />
+    <Compile Remove="Plugin.SocialAuth.Twitter.Droid\Properties\AssemblyInfo.cs" />
+    <Compile Remove="Plugin.SocialAuth.Twitter.Droid\Resources\Resource.designer.cs" />
+    <Compile Remove="Plugin.SocialAuth.Twitter.iOS\TwitterSafariServicesAuthProvider.cs" />
+    <Compile Remove="Plugin.SocialAuth.Twitter.iOS\Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+</Project>
