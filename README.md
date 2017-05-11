@@ -16,7 +16,8 @@ Plugin.SocialAuth aims to provide you with the latest and greatest options for a
  - NuGet packages
  - Automatic handling of refreshing of access tokens in OAuth2
  - More known provider support with specific authentication implementations (Fitbit, Meetup, etc).
-
+ - Windows UWP support!
+ - Helpers to create Authenticated `HttpRequestMessage` objects for further user with provider API's
 
 ## Supported Providers
 
