@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Plugin.SocialAuth.Google.Native.Droid</id>
+        <title>Plugin.SocialAuth - Google with Play services Auth Native Android SDK</title>
+        <version>$version$</version>
+        <authors>Redth</authors>
+        <owners>Redth</owners>
+        <description>Plugin.SocialAuth Google Provider using Google's Native Google Play Services Auth SDK for Android.</description>
+        <copyright>Copyright © Jonathan Dick</copyright>
+        <projectUrl>https://github.com/redth/Plugin.SocialAuth/</projectUrl>
+        <licenseUrl>https://github.com/redth/Plugin.SocialAuth/blob/master/LICENSE</licenseUrl>
+        <!--<iconUrl></iconUrl>-->
+        <dependencies>
+            <group>
+                <dependency id="Plugin.SocialAuth" version="$version$" />
+            </group>
+            <group targetFramework="netstandard1.4">
+                <dependency id="NETStandard.Library" version="1.6.1" />
+            </group>
+            <group targetFramework="MonoAndroid70">
+                <dependency id="Xamarin.GooglePlayServices.Auth" version="42.1001.0" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="../Plugin.SocialAuth.Google.Native/bin/Release/netstandard1.4/Plugin.SocialAuth.Google.Native.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth.Google.Native.Droid/bin/Release/Plugin.SocialAuth.Google.Native.Droid.dll" target="lib/MonoAndroid70" />
+    </files>
+</package>

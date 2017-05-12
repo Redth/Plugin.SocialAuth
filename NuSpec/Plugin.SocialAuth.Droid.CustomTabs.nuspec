@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Plugin.SocialAuth.Droid.CustomTabs</id>
+        <title>Plugin.SocialAuth Android CustomTabs</title>
+        <version>$version$</version>
+        <authors>Redth</authors>
+        <owners>Redth</owners>
+        <description>Xamarin Social Authentication with Native SDK's and OAuth through SFSafariViewController and Android Custom Tabs.</description>
+        <copyright>Copyright © Jonathan Dick</copyright>
+        <projectUrl>https://github.com/redth/Plugin.SocialAuth/</projectUrl>
+        <licenseUrl>https://github.com/redth/Plugin.SocialAuth/blob/master/LICENSE</licenseUrl>
+        <!--<iconUrl></iconUrl>-->
+        <dependencies>
+            <group>
+                <dependency id="Plugin.SocialAuth" version="$version$" />
+            </group>
+            <group targetFramework="MonoAndroid70">
+                <dependency id="Xamarin.Android.Support.CustomTabs" version="25.3.1" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="../Plugin.SocialAuth.Droid.CustomTabs/bin/Release/Plugin.SocialAuth.Droid.CustomTabs.dll" target="lib/MonoAndroid70" />
+    </files>
+</package>

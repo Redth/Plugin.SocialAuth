@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+    <metadata>
+        <id>Plugin.SocialAuth.Facebook.Native.iOS</id>
+        <title>Plugin.SocialAuth - Facebook with Native LoginKit SDK</title>
+        <version>$version$</version>
+        <authors>Redth</authors>
+        <owners>Redth</owners>
+        <description>Plugin.SocialAuth Facebook Provider using Facebook's Native LoginKit SDK for iOS.</description>
+        <copyright>Copyright © Jonathan Dick</copyright>
+        <projectUrl>https://github.com/redth/Plugin.SocialAuth/</projectUrl>
+        <licenseUrl>https://github.com/redth/Plugin.SocialAuth/blob/master/LICENSE</licenseUrl>
+        <!--<iconUrl></iconUrl>-->
+        <dependencies>
+            <group>
+                <dependency id="Plugin.SocialAuth" version="$version$" />
+            </group>
+            <group targetFramework="netstandard1.4">
+                <dependency id="NETStandard.Library" version="1.6.1" />
+            </group>
+            <group targetFramework="Xamarin.iOS10">
+                <dependency id="Xamarin.Facebook.iOS" version="4.19.0" />
+            </group>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="../Plugin.SocialAuth.Facebook.Native/bin/Release/netstandard1.4/Plugin.SocialAuth.Facebook.Native.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth.Facebook.Native.iOS/bin/Release/Plugin.SocialAuth.Facebook.Native.iOS.dll" target="lib/Xamarin.iOS10" />
+    </files>
+</package>
