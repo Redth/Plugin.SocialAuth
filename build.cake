@@ -23,4 +23,6 @@ Task ("nuget").IsDependentOn("libs").Does (() => {
     }
 });
 
+Task ("Default").IsDependentOn("nuget");
+
 RunTarget (TARGET);
