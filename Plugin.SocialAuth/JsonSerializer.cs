@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.Serialization.Json;
 
 namespace Plugin.SocialAuth
 {
@@ -16,13 +15,6 @@ namespace Plugin.SocialAuth
 			try
 			{
 				return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json, settings);
-
-				//var serializer = new DataContractJsonSerializer (typeof(T));
-
-				//var bytes = System.Text.Encoding.UTF8.GetBytes (json);
-
-				//using (var ms = new MemoryStream (bytes))
-				//return (T)serializer.ReadObject (ms);
 			}
 			catch (Exception ex)
 			{
@@ -43,14 +35,6 @@ namespace Plugin.SocialAuth
 			try
 			{
 				return Newtonsoft.Json.JsonConvert.SerializeObject(obj, settings);
-
-				//var serializer = new DataContractJsonSerializer (typeof(T));
-
-				//using (var ms = new MemoryStream ()) {
-				//	serializer.WriteObject (ms, obj);
-				//	var bytes = ms.ToArray ();
-				//	return System.Text.Encoding.UTF8.GetString (bytes, 0, bytes.Length);
-				//}
 			}
 			catch (Exception ex)
 			{
