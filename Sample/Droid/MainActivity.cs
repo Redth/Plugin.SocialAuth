@@ -8,9 +8,9 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.SocialAuth.Droid;
-using Plugin.SocialAuth.Facebook.Droid;
+using Plugin.SocialAuth.Facebook.Native.Droid;
 using Plugin.SocialAuth;
-using Plugin.SocialAuth.Google.Droid;
+using Plugin.SocialAuth.Google.Native.Droid;
 using Plugin.SocialAuth.Twitter.Droid;
 using Plugin.SocialAuth.Droid.CustomTabs;
 

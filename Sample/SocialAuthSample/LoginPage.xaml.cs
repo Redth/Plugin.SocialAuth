@@ -9,6 +9,8 @@ using Xamarin.Forms;
 using System.Threading.Tasks;
 using Plugin.SocialAuth.Facebook;
 using Plugin.SocialAuth;
+using Plugin.SocialAuth.Facebook.Native;
+using Plugin.SocialAuth.Google.Native;
 
 namespace SocialAuthSample
 {

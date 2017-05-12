@@ -4,8 +4,8 @@ using System.Linq;
 
 using Foundation;
 using Plugin.SocialAuth;
-using Plugin.SocialAuth.Facebook.iOS;
-using Plugin.SocialAuth.Google.iOS;
+using Plugin.SocialAuth.Facebook.Native.iOS;
+using Plugin.SocialAuth.Google.Native.iOS;
 using Plugin.SocialAuth.iOS;
 using Plugin.SocialAuth.Twitter.iOS;
 using UIKit;
