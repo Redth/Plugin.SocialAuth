@@ -12,9 +12,6 @@
         <licenseUrl>https://github.com/redth/Plugin.SocialAuth/blob/master/LICENSE</licenseUrl>
         <!--<iconUrl></iconUrl>-->
         <dependencies>
-            <group targetFramework="netstandard1.4">
-                <dependency id="NETStandard.Library" version="1.6.1" />
-            </group>
             <group targetFramework="MonoAndroid70">
                 <dependency id="Xamarin.Android.Support.Compat" version="25.3.1" />
                 <dependency id="Xamarin.Android.Support.Core.UI" version="25.3.1" />
@@ -25,11 +22,12 @@
             </group>
             <group>
                 <dependency id="Newtonsoft.Json" version="10.0.2" />
+                <dependency id="PCLCrypto" version="2.0.147" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="../Plugin.SocialAuth/bin/Release/netstandard1.4/Plugin.SocialAuth.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth/bin/Release/Plugin.SocialAuth.dll" target="lib/portable-net45+win8+wpa81+MonoAndroid70+Xamarin.iOS10" />
         <file src="../Plugin.SocialAuth.Droid/bin/Release/Plugin.SocialAuth.Droid.dll" target="lib/MonoAndroid70" />
         <file src="../Plugin.SocialAuth.iOS/bin/Release/Plugin.SocialAuth.iOS.dll" target="lib/Xamarin.iOS10" />
     </files>

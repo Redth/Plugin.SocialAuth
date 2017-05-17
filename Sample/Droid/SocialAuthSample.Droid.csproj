@@ -172,10 +172,6 @@
     <ProguardConfiguration Include="Proguard\proguard-gps.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
-      <Project>{ECBEFE55-D741-4F99-B354-CA4E2C90793E}</Project>
-      <Name>Plugin.SocialAuth</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Droid\Plugin.SocialAuth.Droid.csproj">
       <Project>{85604B98-06F6-4882-BE86-7E2668FBF374}</Project>
       <Name>Plugin.SocialAuth.Droid</Name>
@@ -184,29 +180,33 @@
       <Project>{C217D565-B466-482D-ADB8-03BDD4995917}</Project>
       <Name>Plugin.SocialAuth.Droid.CustomTabs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native\Plugin.SocialAuth.Facebook.Native.csproj">
-      <Project>{330E776E-3476-4FE6-A4D1-3C662FACCE77}</Project>
-      <Name>Plugin.SocialAuth.Facebook.Native</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native.Droid\Plugin.SocialAuth.Facebook.Native.Droid.csproj">
       <Project>{C4B94A81-7808-48AA-BCDC-665EE8345898}</Project>
       <Name>Plugin.SocialAuth.Facebook.Native.Droid</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
-      <Project>{B65F0237-9AE1-499B-ABDA-23711ACE71B2}</Project>
-      <Name>Plugin.SocialAuth.Google.Native</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native.Droid\Plugin.SocialAuth.Google.Native.Droid.csproj">
       <Project>{9A7DF95C-25F2-4467-81CF-10BBB7FE56C0}</Project>
       <Name>Plugin.SocialAuth.Google.Native.Droid</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser\Plugin.SocialAuth.Twitter.Browser.csproj">
-      <Project>{ED41E57C-5D2E-42FD-88C9-A1E989BFA427}</Project>
-      <Name>Plugin.SocialAuth.Twitter.Browser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser.Droid\Plugin.SocialAuth.Twitter.Browser.Droid.csproj">
       <Project>{9AB3EDCA-A20C-4486-BE53-EE015F3C3A35}</Project>
       <Name>Plugin.SocialAuth.Twitter.Browser.Droid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
+      <Project>{BF5E2890-4830-4F79-8D54-37AC47D9C549}</Project>
+      <Name>Plugin.SocialAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native\Plugin.SocialAuth.Facebook.Native.csproj">
+      <Project>{3ABC191A-C366-41BF-B01B-A841AC68D3D9}</Project>
+      <Name>Plugin.SocialAuth.Facebook.Native</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
+      <Project>{E009D4F5-F4AB-4A01-81FE-243ECF4DCCFD}</Project>
+      <Name>Plugin.SocialAuth.Google.Native</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser\Plugin.SocialAuth.Twitter.Browser.csproj">
+      <Project>{01CF5CEC-4E52-4E75-93AA-D4595C41A4F8}</Project>
+      <Name>Plugin.SocialAuth.Twitter.Browser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

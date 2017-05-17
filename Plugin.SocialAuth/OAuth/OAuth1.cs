@@ -1,12 +1,12 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using PCLCrypto;
 
 namespace Plugin.SocialAuth.OAuth
 {
@@ -239,11 +239,23 @@ namespace Plugin.SocialAuth.OAuth
 				head = "&";
 			}
 
+
 			var key = WebUtil.UrlEncodeRfc5894(consumerSecret) + "&" + WebUtil.UrlEncodeRfc5894(tokenSecret);
-			var hashAlgo = new HMACSHA1(Encoding.ASCII.GetBytes(key));
-			var hash = hashAlgo.ComputeHash(Encoding.ASCII.GetBytes(b.ToString()));
-			var sig = Convert.ToBase64String(hash);
-			return sig;
+
+			byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+			byte[] dataBytes = Encoding.UTF8.GetBytes(b.ToString());
+			var algorithm = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha1);
+			CryptographicHash hasher = algorithm.CreateHash(keyBytes);
+			hasher.Append(dataBytes);
+			byte[] mac = hasher.GetValueAndReset();
+
+			return Convert.ToBase64String(mac);
+
+			// TODO: When netstandard20 is used, we can revert to this cryptography code
+			//var hashAlgo = new HMACSHA1(Encoding.ASCII.GetBytes(key));
+			//var hash = hashAlgo.ComputeHash(Encoding.ASCII.GetBytes(b.ToString()));
+			//var sig = Convert.ToBase64String(hash);
+			//return sig;
 		}
 	}
 }

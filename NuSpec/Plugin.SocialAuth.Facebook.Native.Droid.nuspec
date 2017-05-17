@@ -15,16 +15,13 @@
             <group>
                 <dependency id="Plugin.SocialAuth" version="$version$" />
             </group>
-            <group targetFramework="netstandard1.4">
-                <dependency id="NETStandard.Library" version="1.6.1" />
-            </group>
             <group targetFramework="MonoAndroid70">
                 <dependency id="Xamarin.Facebook.Android" version="4.22.0" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="../Plugin.SocialAuth.Facebook.Native/bin/Release/netstandard1.4/Plugin.SocialAuth.Facebook.Native.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth.Facebook.Native/bin/Release/Plugin.SocialAuth.Facebook.Native.dll" target="lib/portable-net45+win8+wpa81+MonoAndroid70" />
         <file src="../Plugin.SocialAuth.Facebook.Native.Droid/bin/Release/Plugin.SocialAuth.Facebook.Native.Droid.dll" target="lib/MonoAndroid70" />
     </files>
 </package>

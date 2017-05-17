@@ -15,16 +15,13 @@
             <group>
                 <dependency id="Plugin.SocialAuth" version="$version$" />
             </group>
-            <group targetFramework="netstandard1.4">
-                <dependency id="NETStandard.Library" version="1.6.1" />
-            </group>
             <group targetFramework="MonoAndroid70">
                 <dependency id="Plugin.SocialAuth.Droid.CustomTabs" version="$version$" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="../Plugin.SocialAuth.Twitter.Browser/bin/Release/netstandard1.4/Plugin.SocialAuth.Twitter.Browser.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth.Twitter.Browser/bin/Release/Plugin.SocialAuth.Twitter.Browser.dll" target="lib/portable-net45+win8+wpa81+MonoAndroid70+Xamarin.iOS10" />
         <file src="../Plugin.SocialAuth.Twitter.Browser.Droid/bin/Release/Plugin.SocialAuth.Twitter.Browser.Droid.dll" target="lib/MonoAndroid70" />
         <file src="../Plugin.SocialAuth.Twitter.Browser.iOS/bin/Release/Plugin.SocialAuth.Twitter.Browser.iOS.dll" target="lib/Xamarin.iOS10" />
     </files>

@@ -130,7 +130,7 @@ namespace Plugin.SocialAuth
 			var implType = GetRegisteredProvider(providerTypeId);
 
 			if (implType == null)
-				return Task.CompletedTask;
+				return Task.FromResult<object>(null);
 
 			var impl = GetInstance<TAccount, TOptions>(implType);
 
@@ -201,16 +201,6 @@ namespace Plugin.SocialAuth
 			{
 				return authProviders.Values;
 			}
-		}
-
-		public Task<IOAuth1Account> AuthenticateAsync(string providerTypeId, IOAuth1Options options, string accountId)
-		{
-			return AuthenticateAsync<IOAuth1Account, IOAuth1Options>(providerTypeId, options, accountId);
-		}
-
-		public Task<IOAuth2Account> AuthenticateAsync(string providerTypeId, IOAuth2Options options, string accountId)
-		{
-			return AuthenticateAsync<IOAuth2Account, IOAuth2Options>(providerTypeId, options, accountId);
 		}
 	}
 }

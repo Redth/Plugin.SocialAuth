@@ -181,21 +181,9 @@
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
-      <Project>{ECBEFE55-D741-4F99-B354-CA4E2C90793E}</Project>
-      <Name>Plugin.SocialAuth</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native\Plugin.SocialAuth.Facebook.Native.csproj">
-      <Project>{330E776E-3476-4FE6-A4D1-3C662FACCE77}</Project>
-      <Name>Plugin.SocialAuth.Facebook.Native</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native.iOS\Plugin.SocialAuth.Facebook.Native.iOS.csproj">
       <Project>{726B8500-A254-425A-86EA-08DD775FB052}</Project>
       <Name>Plugin.SocialAuth.Facebook.Native.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
-      <Project>{B65F0237-9AE1-499B-ABDA-23711ACE71B2}</Project>
-      <Name>Plugin.SocialAuth.Google.Native</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native.iOS\Plugin.SocialAuth.Google.Native.iOS.csproj">
       <Project>{18CE1FB7-A2CD-4FD7-8B16-B6B609B41189}</Project>
@@ -205,13 +193,25 @@
       <Project>{B4D3FC41-7EC6-480C-9EDE-1D2861255E94}</Project>
       <Name>Plugin.SocialAuth.iOS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser\Plugin.SocialAuth.Twitter.Browser.csproj">
-      <Project>{ED41E57C-5D2E-42FD-88C9-A1E989BFA427}</Project>
-      <Name>Plugin.SocialAuth.Twitter.Browser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser.iOS\Plugin.SocialAuth.Twitter.Browser.iOS.csproj">
       <Project>{6878C436-E894-4E61-8AD7-78E3E106B232}</Project>
       <Name>Plugin.SocialAuth.Twitter.Browser.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
+      <Project>{BF5E2890-4830-4F79-8D54-37AC47D9C549}</Project>
+      <Name>Plugin.SocialAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Facebook.Native\Plugin.SocialAuth.Facebook.Native.csproj">
+      <Project>{3ABC191A-C366-41BF-B01B-A841AC68D3D9}</Project>
+      <Name>Plugin.SocialAuth.Facebook.Native</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
+      <Project>{E009D4F5-F4AB-4A01-81FE-243ECF4DCCFD}</Project>
+      <Name>Plugin.SocialAuth.Google.Native</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugin.SocialAuth.Twitter.Browser\Plugin.SocialAuth.Twitter.Browser.csproj">
+      <Project>{01CF5CEC-4E52-4E75-93AA-D4595C41A4F8}</Project>
+      <Name>Plugin.SocialAuth.Twitter.Browser</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

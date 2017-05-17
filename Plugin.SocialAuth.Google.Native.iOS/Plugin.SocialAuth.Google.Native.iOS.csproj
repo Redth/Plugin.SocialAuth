@@ -66,17 +66,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
-      <Project>{ECBEFE55-D741-4F99-B354-CA4E2C90793E}</Project>
-      <Name>Plugin.SocialAuth</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
-      <Project>{B65F0237-9AE1-499B-ABDA-23711ACE71B2}</Project>
-      <Name>Plugin.SocialAuth.Google.Native</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugin.SocialAuth.iOS\Plugin.SocialAuth.iOS.csproj">
       <Project>{B4D3FC41-7EC6-480C-9EDE-1D2861255E94}</Project>
       <Name>Plugin.SocialAuth.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
+      <Project>{BF5E2890-4830-4F79-8D54-37AC47D9C549}</Project>
+      <Name>Plugin.SocialAuth</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
+      <Project>{E009D4F5-F4AB-4A01-81FE-243ECF4DCCFD}</Project>
+      <Name>Plugin.SocialAuth.Google.Native</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

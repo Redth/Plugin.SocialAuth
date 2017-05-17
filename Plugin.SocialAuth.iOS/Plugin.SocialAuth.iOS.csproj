@@ -58,13 +58,13 @@
     <Compile Include="SecureStore.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
-      <Project>{ecbefe55-d741-4f99-b354-ca4e2c90793e}</Project>
-      <Name>Plugin.SocialAuth</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
+      <Project>{BF5E2890-4830-4F79-8D54-37AC47D9C549}</Project>
+      <Name>Plugin.SocialAuth</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

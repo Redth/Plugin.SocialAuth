@@ -15,16 +15,13 @@
             <group>
                 <dependency id="Plugin.SocialAuth" version="$version$" />
             </group>
-            <group targetFramework="netstandard1.4">
-                <dependency id="NETStandard.Library" version="1.6.1" />
-            </group>
             <group targetFramework="Xamarin.iOS10">
                 <dependency id="Xamarin.Google.iOS.SignIn" version="4.0.1.2" />
             </group>
         </dependencies>
     </metadata>
     <files>
-        <file src="../Plugin.SocialAuth.Google.Native/bin/Release/netstandard1.4/Plugin.SocialAuth.Google.Native.dll" target="lib/netstandard1.4" />
+        <file src="../Plugin.SocialAuth.Google.Native/bin/Release/Plugin.SocialAuth.Google.Native.dll" target="lib/portable-net45+win8+wpa81+Xamarin.iOS10" />
         <file src="../Plugin.SocialAuth.Google.Native.iOS/bin/Release/Plugin.SocialAuth.Google.Native.iOS.dll" target="lib/Xamarin.iOS10" />
     </files>
 </package>

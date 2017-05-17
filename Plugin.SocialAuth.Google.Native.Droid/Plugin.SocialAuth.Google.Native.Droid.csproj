@@ -93,16 +93,16 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
-      <Project>{ECBEFE55-D741-4F99-B354-CA4E2C90793E}</Project>
-      <Name>Plugin.SocialAuth</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Plugin.SocialAuth.Droid\Plugin.SocialAuth.Droid.csproj">
       <Project>{85604B98-06F6-4882-BE86-7E2668FBF374}</Project>
       <Name>Plugin.SocialAuth.Droid</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Plugin.SocialAuth\Plugin.SocialAuth.csproj">
+      <Project>{BF5E2890-4830-4F79-8D54-37AC47D9C549}</Project>
+      <Name>Plugin.SocialAuth</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Plugin.SocialAuth.Google.Native\Plugin.SocialAuth.Google.Native.csproj">
-      <Project>{B65F0237-9AE1-499B-ABDA-23711ACE71B2}</Project>
+      <Project>{E009D4F5-F4AB-4A01-81FE-243ECF4DCCFD}</Project>
       <Name>Plugin.SocialAuth.Google.Native</Name>
     </ProjectReference>
   </ItemGroup>
