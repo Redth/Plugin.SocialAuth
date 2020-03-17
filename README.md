@@ -83,7 +83,7 @@ In your `AppDelegate`'s `FinishedLaunching` method we need to add some calls to 
 ```csharp
 // Init the things
 SocialAuth.Init();
-FacebookAuthProvider.Init(SocialKeys.FACEBOOK_APP_ID;
+FacebookAuthProvider.Init(SocialKeys.FACEBOOK_APP_ID);
 ```
 
 Some providers like Facebook require a specific `Init` call like in the first block above, while others do not.
